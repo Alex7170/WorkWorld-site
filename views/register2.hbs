@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+</head>
+<body>
+    {{header}}
+    <h2>Registration</h2>
+    <form action="http://localhost:3000/api/auth/registration1?_method=PUT" method="POST">
+        <label for="">Name</label>
+        <input type="text" name="name">
+        <label for="">Surname</label>
+        <input type="text" name="surname">
+        <label for="">age</label>
+        <input type="number">
+        <label for="">country</label>
+        <input type="text">
+        <label for="">experience</label>
+        <input type="text">
+        <label for="">other</label>
+        <input type="text">
+        <label for="">links</label>
+        <input type="text">
+        <input type="submit" value="Start">
+    </form>
+    <a href="/login">Already have an account? Log in</a>
+    {{footer}}
+</body>
+</html>

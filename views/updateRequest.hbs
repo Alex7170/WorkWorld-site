@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updating request</title>
+</head>
+<body>
+    {{header}}
+    <h2>Update request</h2>
+    <p>Don't write in columns such words as "I am looking for..." or "I want..." etc.</p>
+    <form action="" method="POST">
+        <label for="">Looking for:</label>
+        <input type="text" name="title" value="{{this.title}}">
+        <label for="">Experince:</label>
+        <p>If experince is not necessary just left this column empty</p>
+        <input type="text" name="experience" value="{{this.experience}}">
+        <label for="">Sallary</label>
+        <p>If sallary is not intended just left this column empty</p>
+        <input type="text" name="sallary" value="{{this.sallary}}">
+        <label for="">Information about your request</label>
+        <p>like what can you suggest and etc.</p>
+        <input type="text" name="information" value="{{this.information}}">
+        <input type="submit" value="Update request">
+    </form>
+    <a href="/myPage/:id">Back to my page</a>
+    {{footer}}
+</body>
+</html>
