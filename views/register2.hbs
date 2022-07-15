@@ -8,25 +8,30 @@
 </head>
 <body>
     {{header}}
-    <h2>Registration</h2>
-    <form action="http://localhost:3000/api/auth/registration1?_method=PUT" method="POST">
+    <h2>Add other information about yourself</h2>
+    <form action="http://localhost:3000/api/auth/registration2?_method=PUT" method="POST">
         <label for="">Name</label>
-        <input type="text" name="name">
+        <input type="text" name="name" required>
         <label for="">Surname</label>
-        <input type="text" name="surname">
+        <input type="text" name="surname" required>
         <label for="">age</label>
-        <input type="number">
+        <input type="number" name="age">
         <label for="">country</label>
-        <input type="text">
+        <input type="text" name="country">
         <label for="">experience</label>
-        <input type="text">
+        <p>Write main information about your experince in programming.</p>
+        <input type="text" name="experience">
         <label for="">other</label>
-        <input type="text">
+        <p>Write details that you also want to tell.</p>
+        <input type="text" name="other">
         <label for="">links</label>
-        <input type="text">
-        <input type="submit" value="Start">
+        <p>Write some links abbot you if you want in format like : git - http:/git/somepage/yourAccount.</p>
+        <input type="text" name="links">
+        <label for="">Avatar</label>
+        <p>Upload an avatar</p>
+        <input type="file" name="avatar">
+        <input type="submit" value="Add this information">
     </form>
-    <a href="/login">Already have an account? Log in</a>
     {{footer}}
 </body>
 </html>

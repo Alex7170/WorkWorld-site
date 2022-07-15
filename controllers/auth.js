@@ -3,6 +3,10 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const keys = require("../keys/keys")
 const errorHandler = require("../utils/errorHadler")
+const controlPassword = require("../utils/controlPassword").controlPassword
+const errorHadler = require("../utils/errorHadler")
+const multer  = require("multer")
+
 module.exports.getLogin = (req,res)=>{
    res.render("login.hbs")
 }
@@ -22,12 +26,12 @@ module.exports.login = async (req,res)=>{
         if (passwordResult){
             const token = jwt.sign({
                 email: requestedUser.email,
-                id: requestedUser._id
+                userId: requestedUser._id
             }, keys.jwt, {expiresIn: 3600})
-            res.status(200).json({
+            res.status(200)
+            res.json({
                 token: `Bearer ${token}`
             })
-            res.redirect("/api/")
         } else {
             res.status(401).json({
                 message: "Wrong password. Try again."
@@ -43,35 +47,64 @@ module.exports.login = async (req,res)=>{
 module.exports.firstRegister = async (req,res)=>{
     const requestedEmail = await User.findOne({email: req.body.email})
     if (requestedEmail){
-        res.status(409).json({
+        return (res.status(409).json({
             message: "This email is already in use. Try another one."
-    })} else if (req.body.password1 !== req.body.password2){
-        res.status(401).json({
-            message: "Passwords do not match"
+    }))}
+    const result = await controlPassword(req.body.password1)
+    if (result.result == false){
+        return res.status(401).json({
+            message : result.message
         })
-    }   else{
-        const salt = bcrypt.genSaltSync(10)
-        const password = req.body.password1
-        const user = new User({
-            email: req.body.email,
-            password : await bcrypt.hash(password, salt)
-        })
-        try{
-            await user.save()
-            res.status(201)
-            res.redirect("/api/auth/registrationSucces")
-        } catch(e){
-            errorHandler(res,e)
-        }
-        
     }
+    if (req.body.password1 !== req.body.password2){
+        return (res.status(401).json({\\
+            message: "Passwords do not match"
+    }))}
+    const salt = bcrypt.genSaltSync(10)
+    const password = req.body.password1
+    const user = new User({
+        email: req.body.email,
+        password : await bcrypt.hash(password, salt)
+    })
+    try{
+        await user.save()
+        res.status(201)
+        // res.redirect("/api/auth/registrationSucces")
+    } catch(e){
+        errorHandler(res,e)
+    }        
 }
 
-module.exports.getSuccesRegister = (req,res)=>{
+
+module.exports.getSuccesRegister =(req,res)=>{
     res.render("accountCreated")
+    setTimeout(()=> res.redirect("/api/auth/login"))
+
 }
 
 module.exports.secondRegister = async (req,res)=>{
-    const name = req.body.name
-    const surname = req.body.surname
+    const {name, surname, age, country, experience, other, links} = req.body
+    try{
+        await User.updateOne({_id: req.user.id},{name: name, surname: surname, age: age, country: country, experience: experience, other: other, links:links})
+        res.status(200).json({
+        message: "Information added succesfully"
+        })
+        res.redirect("/api/uploadAvatar")
+    } catch (e){
+        errorHadler(res,e)
+    }
+}
+
+module.exports.getUploadAvatar = (req,res)=>{
+    res.render("saveAvatar")
+}
+
+module.exports.uploadAvatar = async (req,res)=>{
+    const image = req.file ? req.file.path : ""
+    try{
+
+    } catch{
+        errorHadler(e)
+    }
+    await User.updateOne({_id:req.user.id}, {imageSrc:image})
 }

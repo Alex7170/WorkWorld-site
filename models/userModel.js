@@ -24,6 +24,10 @@ const userScheme = new Schema({
     links: String,
     messages:{
         type: Array
+    },
+    imageSrc:{
+        type: String,
+        default : ""
     }
 }, { versionKey: false })
 
