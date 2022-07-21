@@ -12,7 +12,8 @@ const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const passport = require("passport")
 const Schema = mongoose.Schema
-mongoose.connect("mongodb+srv://ALex:7170@workworld.6dz4g.mongodb.net/?retryWrites=true&w=majority", {useUnifiedTopology: true, useNewUrlParser: true}).catch(err=> console.log(err))
+const {link} = require("./keys/keys")
+mongoose.connect(link, {useUnifiedTopology: true, useNewUrlParser: true}).then(console.log("Mongo connected succesfully")).catch(err => console.log(err))
 app.use(require("morgan")("dev"))
 app.use(require("cors")())
 // app.use(bodyParser.urlencoded({extended: true}))
@@ -20,9 +21,14 @@ app.use(bodyParser.json())
 app.use(passport.initialize())
 require("./middleware/passport")(passport)
 app.use(methodOverride("_method"))
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json())
 app.set("view engine", "hbs")
+hbs.registerPartials(__dirname + "/views/partials")
 app.use("/api/auth", authRoutes)
 app.use("/api/myPage", myPageRoutes)
 app.use("/api", mainRoutes)
-app.listen(3000) // http://localhost:3000/api
+app.listen(3000)
+
+module.exports = app// http://localhost:3000/api
 

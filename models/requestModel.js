@@ -5,4 +5,4 @@ const requestScheme = new Schema({
     
 }, { versionKey: false })
 
-module.exports = mongoose.model("Request", requestScheme)
+module.exports = mongoose.model("requests", requestScheme)

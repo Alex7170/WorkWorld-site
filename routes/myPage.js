@@ -1,9 +1,9 @@
 const express = require("express")
 const router = express.Router()
 const methodOvveride = require("method-override")
-const urlencodedParser = express.urlencoded({extended:false})
 const controller = require("../controllers/myPage")
 const passport = require("passport")
+const urlencodedParser = express.urlencoded({extended: false});
 router.use(methodOvveride("_method"))
 router.get("/myPage/:id", passport.authenticate('jwt', {session:false}), controller.getMyPage)
 router.get("/myPage/profile/:id", passport.authenticate('jwt', {session:false}), controller.getProfile)

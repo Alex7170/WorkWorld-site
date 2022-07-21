@@ -8,14 +8,18 @@
     <title>WorkWorld</title>
 </head>
 <body>
-    {{header}}
+    {{#if isAuthorized}}
+        {{> headerTrue}}
+    {{else}}
+        {{> headerFalse}}
+    {{/if}}
     <div>
         <h2>Requests</h2>
         {{#each users}}
             <div>
-                <h3>{{this.title}}</h3>
+                <h3>Looking for {{this.title}}</h3>
                 <p>Experience: {{this.experince}}</p>
-                <p>{{this.short}}...</p>
+                <p>{{this.other}}...  {{this.salary}}</p>
             </div>
         {{/each}}
     </div>

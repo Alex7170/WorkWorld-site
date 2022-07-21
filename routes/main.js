@@ -1,8 +1,8 @@
 const express = require("express")
 const router = express.Router()
 const controller = require("../controllers/main")
-const passport = require("passport")
+const accesMain = require("../middleware/accesMain")
 
-router.get("/", controller.getMain)
+router.get("/", accesMain, controller.getMain)
 
 module.exports = router

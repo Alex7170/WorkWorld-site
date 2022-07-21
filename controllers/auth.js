@@ -1,7 +1,7 @@
 const User = require("../models/userModel")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-const keys = require("../keys/keys")
+const {secret} = require("../keys/keys")
 const errorHandler = require("../utils/errorHadler")
 const controlPassword = require("../utils/controlPassword").controlPassword
 const errorHadler = require("../utils/errorHadler")
@@ -26,8 +26,8 @@ module.exports.login = async (req,res)=>{
         if (passwordResult){
             const token = jwt.sign({
                 email: requestedUser.email,
-                userId: requestedUser._id
-            }, keys.jwt, {expiresIn: 3600})
+                userId: requestedUser.id
+            }, secret, {expiresIn: 3600})
             res.status(200)
             res.json({
                 token: `Bearer ${token}`
@@ -57,7 +57,7 @@ module.exports.firstRegister = async (req,res)=>{
         })
     }
     if (req.body.password1 !== req.body.password2){
-        return (res.status(401).json({\\
+        return (res.status(401).json({
             message: "Passwords do not match"
     }))}
     const salt = bcrypt.genSaltSync(10)
@@ -78,7 +78,7 @@ module.exports.firstRegister = async (req,res)=>{
 
 module.exports.getSuccesRegister =(req,res)=>{
     res.render("accountCreated")
-    setTimeout(()=> res.redirect("/api/auth/login"))
+    // res.redirect("/api/auth/login"))
 
 }
 
@@ -89,7 +89,7 @@ module.exports.secondRegister = async (req,res)=>{
         res.status(200).json({
         message: "Information added succesfully"
         })
-        res.redirect("/api/uploadAvatar")
+        // res.redirect("/api/uploadAvatar")
     } catch (e){
         errorHadler(res,e)
     }
@@ -106,5 +106,6 @@ module.exports.uploadAvatar = async (req,res)=>{
     } catch{
         errorHadler(e)
     }
-    await User.updateOne({_id:req.user.id}, {imageSrc:image})
+    await User.updateOne({_id: req.user.id}, {imageSrc: image})
+    res.status(200).json({message: "Added succesfully"})
 }
