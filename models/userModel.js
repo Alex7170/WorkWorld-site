@@ -21,6 +21,7 @@ const userSchema = new Schema({
     experience: String,
     other: String,
     links: String,
+    phone: String,
     messages:{
         type: Array
     },
