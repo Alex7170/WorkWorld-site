@@ -19,12 +19,23 @@ const userSchema = new Schema({
     age: Number,
     country: String,
     experience: String,
-    other: String,
     links: String,
     phone: String,
-    messages:{
-        type: Array
-    },
+    other: String,
+    messages:[
+        {
+            send: Boolean,
+            wroteAt: Number,
+            title: String,
+            message: String,
+            email: String, //user's email you talking with
+            id: String,
+            file: {
+                type: String,
+                default: ""
+            }
+        },
+    ],
     imageSrc:{
         type: String,
         default : ""

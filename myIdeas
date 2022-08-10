@@ -1,0 +1,4 @@
+когда хотим отправить сообщение отправляем в res.json как токен и на клиенте обрабатываем
+
+
+<p><img src="writeMessage.png"><img src="leftRow.png"><span>new message</span></p>

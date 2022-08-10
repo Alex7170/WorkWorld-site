@@ -9,10 +9,11 @@
 <body>
     {{header}}
     <h2>Upload your avatar</h2>
-    <form action="/api/auth/uploadAvatar" method="post" enctype="multipart/form-data">
-        <input type="file" name="avatar" />
-        <input type="submit" value="Send file" />
-      </form>
+    <p>You can add photo in format jpeg, png, jpg</p>
+    <form action="/api/auth/uploadAvatar" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" />
+        <input type="submit" value="Save file"/>
+    </form>
     {{footer}}
 </body>
 </html>

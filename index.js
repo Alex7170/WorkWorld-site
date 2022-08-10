@@ -7,16 +7,16 @@ const authRoutes = require("./routes/auth")
 const myPageRoutes = require("./routes/myPage")
 const mainRoutes = require("./routes/main")
 const methodOverride = require("method-override")
-const urlencodedParser = express.urlencoded({extended: false});
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const passport = require("passport")
 const Schema = mongoose.Schema
 const {link} = require("./keys/keys")
+const multer = require("multer")
 mongoose.connect(link, {useUnifiedTopology: true, useNewUrlParser: true}).then(console.log("Mongo connected succesfully")).catch(err => console.log(err))
 app.use(require("morgan")("dev"))
 app.use(require("cors")())
-// app.use(bodyParser.urlencoded({extended: true}))
+app.use(express.static("uploads"))
 app.use(bodyParser.json())
 app.use(passport.initialize())
 require("./middleware/passport")(passport)
@@ -29,6 +29,5 @@ app.use("/api/auth", authRoutes)
 app.use("/api/myPage", myPageRoutes)
 app.use("/api", mainRoutes)
 app.listen(3000)
-
 module.exports = app// http://localhost:3000/api
 

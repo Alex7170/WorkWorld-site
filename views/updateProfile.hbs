@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your profile</title>
+</head>
+<body>
+    {{headerTrue}}
+
+    <div>
+        <img src={{avatar}}>
+        <div><a href="/api/auth/uploadAvatar">Change your avatar</a></div>
+        <form action="/api/myPage/profile_method=PUT" method="POST">
+            <input type="text" value="{{name}}" required>
+            <input type="text" value="{{surname}}" required>
+            <label for="">Your email: {{email}}</label>
+            <span>age: </span> <input type="number" value="{{age}}">
+            <span>country: </span> <input type="text" value="{{country}}">
+            <label for="">experience</label>
+            <p>Write main information about your experince in programming.</p>
+            <textarea name="exerience" cols="30" rows="5">{{experience}}</textarea>
+            <label for="">links</label>
+            <p>Write some links abbot you if you want in such format as: git - http:/git/somepage/yourAccount. </p>
+            <p>Put an enter after every link.</p>
+            <textarea name="links" cols="30" rows="5">{{links}}</textarea>
+            <span>phone: </span><input type="tel" value="{{phone}}">
+            <label for="">other</label>
+            <p>Write details that you also want to tell.</p>
+            <textarea name="other" cols="30" rows="10">{{other}}</textarea>
+            <input type="submit" value="Update">
+        </form>
+        
+    </div>
+
+    {{footer}}
+</body>
+</html>

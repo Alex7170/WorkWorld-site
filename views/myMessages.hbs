@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{headerTrue}}
+    <h1>Messages</h1>
+    <div>
+        <h2>Got</h2>
+        {{#each emailsGot}}
+        <div>
+            <a href="api/myPage/messages/{{this.id}}">
+                <h3>{{this.title}}</h3> <span>{{this.wroteAt}}</span>
+                <span>{{this.email}}</span>
+                <p>{{this.message}}</p>
+            </a>
+        </div>
+        {{/each}} 
+    </div>
+    <div>
+        <h2>Send</h2>
+        {{#each emailsSend}}
+            <div>
+                <a href="api/myPage/messages/{{this.id}}">
+                    <h3>{{this.title}}</h3> <span>{{this.wroteAt}}</span>
+                    <span>{{this.email}}</span>
+                    <p>{{this.message}}</p>
+                </a>
+            </div>
+        {{/each}}
+    </div>
+    {{footer}}
+</body>
+</html>

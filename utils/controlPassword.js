@@ -1,4 +1,4 @@
-module.exports.controlPassword = function(password){
+module.exports = function(password){
     if (password.length<8) return {result:false, message: "Password have to consist at least 8 symbols"}
     if (password.length>16) return {result:false, message: "Passwordcan maximally consist 16 symbols"}
     let big = false

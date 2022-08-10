@@ -3,10 +3,8 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const {secret} = require("../keys/keys")
 const errorHandler = require("../utils/errorHadler")
-const controlPassword = require("../utils/controlPassword").controlPassword
+const controlPassword = require("../utils/controlPassword")
 const errorHadler = require("../utils/errorHadler")
-const multer  = require("multer")
-
 module.exports.getLogin = (req,res)=>{
    res.render("login.hbs")
 }
@@ -50,7 +48,7 @@ module.exports.firstRegister = async (req,res)=>{
         return (res.status(409).json({
             message: "This email is already in use. Try another one."
     }))}
-    const result = await controlPassword(req.body.password1)
+    const result = controlPassword(req.body.password1)
     if (result.result == false){
         return res.status(401).json({
             message : result.message
@@ -83,9 +81,9 @@ module.exports.getSuccesRegister =(req,res)=>{
 }
 
 module.exports.secondRegister = async (req,res)=>{
-    const {name, surname, age, country, experience, other, links} = req.body
+    const {name, surname, age, country, experience, links, phone, other} = req.body
     try{
-        await User.updateOne({_id: req.user.id},{name: name, surname: surname, age: age, country: country, experience: experience, other: other, links:links})
+        await User.updateOne({_id: req.user.id},{name: name, surname: surname, age: age, country: country, experience: experience, phone:phone, other: other, links:links})
         res.status(200).json({
         message: "Information added succesfully"
         })
@@ -102,10 +100,9 @@ module.exports.getUploadAvatar = (req,res)=>{
 module.exports.uploadAvatar = async (req,res)=>{
     const image = req.file ? req.file.path : ""
     try{
-
+        await User.updateOne({_id: req.user.id}, {imageSrc: image})
+        res.status(201).json({message: "Added succesfully"})
     } catch{
         errorHadler(e)
     }
-    await User.updateOne({_id: req.user.id}, {imageSrc: image})
-    res.status(200).json({message: "Added succesfully"})
 }

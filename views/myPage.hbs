@@ -4,12 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
+    <title>My page</title>
 </head>
 <body>
-    {{header}}
+    {{headerTrue}}
     <div>
-        
+        <img src="{{this.avatar}}" alt="">
+        <h3>{{this.name}} {{this.surname}}</h3>
+        <p>email: {{email}}</p>
+        {{#each links}}
+            <p>{{this}}</p>
+        {{/each}}
+        <span><a href="/api/myPage/updateProfil">see whole profil...</a></span>
+    </div>
+    <div>
+        <h2>For employer</h2>
+        <div><a href="/api/myPage/myRequests">My requests</a></div>
+    </div>
+    <div>
+        <a href="/api/myPage/messages"><h2>Messages</h2></a>
+        {{#each messages}}
+            <a href="/api/auth/myMessages/{{this.id}}">
+                <div>
+                    <h3>{{this.title}}</h3> <span>{{this.wroteAt}}</span>
+                    <span>{{this.email}}</span>
+                    <p>{{this.message}}</p>
+                </div>
+            </a>
+        {{/each}}
+        <h2><a href="/api/myPage/messages">All messages</a></h2>
     </div>
     {{footer}}
 </body>

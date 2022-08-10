@@ -7,9 +7,9 @@
     <title>Registration</title>
 </head>
 <body>
-    {{header}}
+    {{headerFalse}}
     <h2>Add other information about yourself</h2>
-    <form action="http://localhost:3000/api/auth/registration2?_method=PUT" method="POST">
+    <form action="http://localhost:3000/api/auth/registration2" method="POST">
         <label for="">Name</label>
         <input type="text" name="name" required>
         <label for="">Surname</label>
@@ -20,16 +20,16 @@
         <input type="text" name="country">
         <label for="">experience</label>
         <p>Write main information about your experince in programming.</p>
-        <input type="text" name="experience">
+        <textarea name="experience" cols="30" rows="4"></textarea>
+        <label for="">links</label>
+        <p>Write some links abbot you if you want in such format as: git - http:/git/somepage/yourAccount. </p>
+        <p>Put an enter after every link.</p>    
+        <textarea name="links" cols="30" rows="5" maxlength="250"></textarea>
+        <label for="">Phone number</label>
+        <input type="tel" name="phone">
         <label for="">other</label>
         <p>Write details that you also want to tell.</p>
-        <input type="text" name="other">
-        <label for="">links</label>
-        <p>Write some links abbot you if you want in format like : git - http:/git/somepage/yourAccount.</p>
-        <input type="text" name="links">
-        <label for="">Avatar</label>
-        <p>Upload an avatar</p>
-        <input type="file" name="avatar">
+        <textarea name="other" cols="30" rows="7" maxlength="500"></textarea>>
         <input type="submit" value="Add this information">
     </form>
     {{footer}}
