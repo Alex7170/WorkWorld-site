@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WorkWorld</title>
+    <title>Request</title>
 </head>
 <body>
     {{#if isAuthorized}}
@@ -12,16 +12,11 @@
     {{else}}
         {{> headerFalse}}
     {{/if}}
-    <div>
-        <h2>Requests</h2>
-        {{#each requests}}
-            <div>
-                <h3>Looking for {{this.title}}</h3>
-                <p>Experience: {{this.experience}}</p>
-                <p>{{this.other}}...  {{this.salary}}</p>
-            </div>
-        {{/each}}
-    </div>
+    <h2>{{request.title}}</h2>
+    <span>{{request.experience}}</span>
+    <p>{{other}}</p>
+    <h3>Sallary: {{sallary}}</h3>
+    <button>Write us</button> <!-- Here have to be function, which have to redirect on /api/main/newMessage with headers recipient: toUser.email -->
     {{> footer}}
 </body>
 </html>

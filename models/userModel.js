@@ -11,10 +11,12 @@ const userSchema = new Schema({
         required: true
     },
     name: {
-        type: String
+        type: String,
+        default: "Name"
     },
     surname:{
-        type: String
+        type: String,
+        default: "Surname"
     },
     age: Number,
     country: String,
@@ -39,7 +41,11 @@ const userSchema = new Schema({
     imageSrc:{
         type: String,
         default : ""
-    }
+    },
+    requests:[{
+        type: Schema.Types.ObjectId,
+        ref: "Request"
+    }]
 }, { versionKey: false })
 
 module.exports = model("User", userSchema)

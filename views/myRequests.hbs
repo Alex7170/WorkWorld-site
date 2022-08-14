@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My requests</title>
+</head>
+<body>
+    {{> headerTrue}}
+    <h1>My requests</h1>
+    {{#each requests}}
+        <div>
+            <a href="api/myPage/myRequests/{{this.id}}">
+                <h3>{{this.title}}</h3>
+                <span>Required experience: {{this.experience}}</span><span>{{this.salary}}</span>
+                <p>{{this.other}}</p>
+            </a>
+            <button>Delete</button> <!-- Delete message without page reload -->
+        </div>
+    {{/each}}
+    {{> footer}}
+</body>
+</html>

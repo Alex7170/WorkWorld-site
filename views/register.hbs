@@ -7,7 +7,7 @@
     <title>Registration</title>
 </head>
 <body>
-    {{headerFalse}}
+    {{> headerFalse}}
     <h2>Registration</h2>
     <form method="POST">
         <label for="">Email</label>
@@ -19,6 +19,6 @@
         <input type="submit" value="Continue registration">
     </form>
     <a href="/api/auth/login">Already have an account? Log in</a>
-    {{footer}}
+    {{> footer}}
 </body>
 </html>

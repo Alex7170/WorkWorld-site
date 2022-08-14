@@ -1,51 +1,62 @@
 const User = require("../models/userModel")
+const Request = require("../models/requestModel")
 const errorHandler = require("../utils/errorHadler")
-const moment = require("moment")
-const nodemailer = require("nodemailer")
-const transporter = require("../utils/transporter")
+const { findById } = require("../models/userModel")
 
 module.exports.getMyPage = async (req,res)=>{
-    console.log(req.user)
     try{
         const user = await User.findById(req.user.id)
-        const result = user.links.split(/\r?\n/)
-        const messages = user.messages.slice(-5)
-        messages.forEach(item => {
+        if(user.links) user.links.split(/\r?\n/)
+        user.messages.slice(-5)
+        user.messages.forEach(item => {
             item.message.slice(0,51)
             item.wroteAt = item.wroteAt.fromNow()
         })
-        res.render("myPage.hbs", {
-            avatar: user.imageSrc,
-            name: user.name,
-            surname: user.surname,
-            email: user.email,
-            links: result,
-            phone: user.phone,
-            other: user.other,
-            messages: messages
-        })
+        let imageSrc
+        if (!user.imageSrc || user.imageSrc == ""){
+            imageSrc = "pureAvatar.jpg"
+        } else{
+            imageSrc = user.imageSrc
+        }
+        res.render("myPage.hbs", {user, imageSrc})
         res.status(200)
     } catch(e){
         errorHandler(res,e)
     }
 }
 
+module.exports.getUploadAvatar = (req,res)=>{
+    let imageSrc
+    if (!req.user.imageSrc || req.user.imageSrc == ""){
+        imageSrc = "pureAvatar.jpg"
+    } else{
+        imageSrc = req.user.imageSrc
+    }
+    res.render("saveAvatar", {imageSrc})
+}
+
+module.exports.uploadAvatar = async (req,res)=>{
+    const image = req.file ? req.file.path : ""
+    try{
+        await User.updateOne({_id: req.user.id}, {imageSrc: image})
+        res.status(201).json({
+            message: "Added succesfully"
+        })
+    } catch{
+        errorHandler(e)
+    }
+}
+
 module.exports.getProfile = async (req,res)=>{
     try{
         const user = await User.findById(req.user.id)
-        res.render("updateProfile", {
-            email: user.email,
-            avatar: user.imageSrc,
-            name: user.name,
-            surname: user.surname,
-            age: user.age,
-            country: user.country,
-            experience: user.experience,
-            links: user.links,
-            phone: user.phone,
-            other: user.other
-        })
-        res.status(200)
+        let imageSrc
+        if (!user.imageSrc || user.imageSrc == ""){
+            imageSrc = "pureAvatar.jpg"
+        } else{
+            imageSrc = user.imageSrc
+        }
+        res.render("updateProfile", {user, imageSrc})
     } catch(e){
         errorHandler(res,e)
     }
@@ -57,8 +68,6 @@ module.exports.updateUser = async (req,res)=>{
             return res.status(200)
         }
         await User.findByIdAndUpdate(req.user.id, {
-            imageSrc: req.body.imageSrc,
-            avatar: req.body.imageSrc,
             name: req.body.name,
             surname: req.body.surname,
             age: req.body.age,
@@ -94,72 +103,34 @@ module.exports.getMessages = async (req,res)=>{
                 emailsGet.push(messages[i])
             }
         }
+        let imageSrc
+        if (!user.imageSrc || user.imageSrc == ""){
+            imageSrc = "pureAvatar.jpg"
+        } else{
+            imageSrc = user.imageSrc
+        }
         res.render("myMessages", {emailsGet, emailsSend})
-        res.status(200)
     } catch(e){
         errorHandler(res,e)
     }
 }
 
-module.exports.getNewMessage = (req,res)=>{
-    const recipient = req.headers.recipient
-    res.render("newMessage", {recipient})
-}
 
-module.exports.newMessage = async (req,res)=>{
-    try{
-        const any = req.file ? req.file.path : ""
-        const recipient = req.headers.recipient
-        const toUser = await User.findOne({email: recipient})
-        const fromUser = await User.findById(req.user.id)
-        const {title, message} = req.body
-        const id = moment().format("DDMMYYYY-HHmmss_SSS")
-        const date = moment()
 
-        fromUser.messages.push({
-            send: true,
-            wroteAt: date,
-            title: title,
-            mesage: message,
-            email: recipient,
-            id: id,
-            file: any
-        })
-        await fromUser.save()
-        toUser.messages.push({
-            send: false,
-            wroteAt: date,
-            title: title,
-            message: message, 
-            email: req.user.email,
-            id: id,
-            file: any
-        })
-        await toUser.save()
-        const transporterMessage = "You have unread message on your WorkWorld account"
-        await transporter.sendMail({
-            from: " WorkWorld <yaroshenko.sashko@gmail.com>",
-            to: recipient,
-            subject: "New email",
-            message: transporterMessage,
-            html: `<p>${transporterMessage}</p><br><a href="/api/auth/login"><img src="writeMessage.png"></a>`
-        })
-        res.status(200).json({
-            message: "Message has been sent succesfully."
-        })
-    } catch(e){
-        errorHandler(res,e)
-    }
 
-}
 
 module.exports.getOneMessage = async (req,res)=>{
     try{
         const sender = await User.findById(req.user.id)
         const message = sender.messages.find(message => message.id == req.params.id)
         message.date = message.date.calender()
-        res.render("message", {message})
-        res.status(200)
+        let imageSrc
+        if (!sender.imageSrc || sender.imageSrc == ""){
+            imageSrc = "pureAvatar.jpg"
+        } else{
+            imageSrc = sender.imageSrc
+        }
+        res.render("message", {message, imageSrc})
     } catch(e){
         errorHandler(res,e)
     }
@@ -178,28 +149,95 @@ module.exports.deleteOneMessage = async (req,res)=>{
 }
 
 
-module.exports.getMyRequests = (req,res)=>{
-
-}
-
-module.exports.deleteRequest = (req,res)=>{
+module.exports.getMyRequests = async (req,res)=>{
+    try{
+        const requests = await Request.find({creator: req.user.id})
+        requests.forEach(item=>{
+            item.title.slice(0, 20)
+            item.other.slice(0,50)
+        })
+        let imageSrc
+        if (!req.user.imageSrc || req.user.imageSrc == ""){
+            imageSrc = "pureAvatar.jpg"
+        } else{
+            imageSrc = req.user.imageSrc
+        }
+        res.render("myRequests", {requests, imageSrc})
+    } catch(e){
+        errorHandler(res,e)
+    }
     
 }
 
-module.exports.getUpdateRequest = (req,res) =>{
-    
+module.exports.deleteRequest = async (req,res) =>{
+    try{
+        await Request.deleteOne({id:req.params.id})
+        const user = await findById(req.user.id)
+        const index = user.requests.findIndex(item => item.id == req.params.id)
+        user.requests.splice(index,1)
+        await user.save()
+        res.status(200).json({message: "Deleted Succesfully"})
+    } catch(e){
+        errorHandler(res,e)
+    }
 }
 
-module.exports.updateRequest = (req,res) =>{
+module.exports.getUpdateRequest = async (req,res) =>{
+    try{
+        const request = await Request.findById(req.params.id)
+        let imageSrc
+        if (!req.user.imageSrc || req.user.imageSrc == ""){
+            imageSrc = "pureAvatar.jpg"
+        } else{
+            imageSrc = req.user.imageSrc
+        }
+        res.render("updateRequest", {request, imageSrc})
+    } catch(e){
+        errorHandler(res,e)
+    }
+}
 
+module.exports.updateRequest = async (req,res) =>{
+    try{
+        await Request.findByIdAndUpdate(req.params.id, {
+            tltle: req.body.title,
+            experience: req.body.experience,
+            salary: req.body.salary,
+            other: req.body.other
+        })
+    } catch(e){
+        errorHandler(res,e)
+    }
 }
 
 module.exports.getNewRequest = (req,res)=>{
-    
+    console.log("here")
+    let imageSrc
+    if (!req.user.imageSrc || req.user.imageSrc == ""){
+        imageSrc = "pureAvatar.jpg"
+    } else{
+        imageSrc = req.user.imageSrc
+    }
+    res.render("createRequest", {imageSrc})
 }
 
-module.exports.newRequest = (req,res)=>{
-    
+module.exports.newRequest = async (req,res)=>{
+    try{
+        const request = new Request({
+            creator: req.user.id,
+            title: req.body.title,
+            experience: req.body.experience,
+            salary: req.body.salary,
+            other: req.body.other
+        })
+        await request.save()
+        const user = await User.findById(req.user.id)
+        user.requests.push(request.id)
+        await user.save()
+        res.status(201).json({message: "Created succesfully"})
+    } catch(e){
+        errorHandler(res,e)
+    }
 }
 
 

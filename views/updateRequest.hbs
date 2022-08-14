@@ -7,24 +7,24 @@
     <title>Updating request</title>
 </head>
 <body>
-    {{header}}
+    {{> headerTrue}}
     <h2>Update request</h2>
     <p>Don't write in columns such words as "I am looking for..." or "I want..." etc.</p>
-    <form action="" method="POST">
+    <form action="/api/myPage/myRequests/:id_method=PUT" method="POST">
         <label for="">Looking for:</label>
-        <input type="text" name="title" value="{{this.title}}">
+        <input type="text" name="title" value="{{request.title}}" required>
         <label for="">Experince:</label>
         <p>If experince is not necessary just left this column empty</p>
-        <input type="text" name="experience" value="{{this.experience}}">
+        <input type="text" name="experience" value="{{request.experience}}">
         <label for="">Sallary</label>
         <p>If sallary is not intended just left this column empty</p>
-        <input type="text" name="sallary" value="{{this.sallary}}">
+        <input type="text" name="salary" value="{{request.sallary}}">
         <label for="">Information about your request</label>
         <p>like what can you suggest and etc.</p>
-        <input type="text" name="information" value="{{this.information}}">
+        <textarea name="other" cols="30" rows="10" required>{{request.information}}</textarea>
         <input type="submit" value="Update request">
     </form>
     <a href="/myPage/:id">Back to my page</a>
-    {{footer}}
+    {{> footer}}
 </body>
 </html>

@@ -1,8 +1,6 @@
 const express = require("express")
 const hbs = require("hbs")
 const app = express()
-const cors = require("cors")
-const morgan = require("morgan")
 const authRoutes = require("./routes/auth")
 const myPageRoutes = require("./routes/myPage")
 const mainRoutes = require("./routes/main")
@@ -10,14 +8,11 @@ const methodOverride = require("method-override")
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const passport = require("passport")
-const Schema = mongoose.Schema
 const {link} = require("./keys/keys")
-const multer = require("multer")
+
 mongoose.connect(link, {useUnifiedTopology: true, useNewUrlParser: true}).then(console.log("Mongo connected succesfully")).catch(err => console.log(err))
 app.use(require("morgan")("dev"))
 app.use(require("cors")())
-app.use(express.static("uploads"))
-app.use(bodyParser.json())
 app.use(passport.initialize())
 require("./middleware/passport")(passport)
 app.use(methodOverride("_method"))
@@ -28,6 +23,7 @@ hbs.registerPartials(__dirname + "/views/partials")
 app.use("/api/auth", authRoutes)
 app.use("/api/myPage", myPageRoutes)
 app.use("/api", mainRoutes)
-app.listen(3000)
-module.exports = app// http://localhost:3000/api
+app.listen(3000, ()=> console.log("Server is working"))
+
+module.exports = app    // http://localhost:3000/api
 

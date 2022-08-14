@@ -7,16 +7,16 @@
     <title>Message</title>
 </head>
 <body>
-    {{headerTrue}}
+    {{> headerTrue}}
     <h1>Message</h1>
     {{#if send}}
-        <p>to {{message.email}}</p>
-        <span>{{</span>
+        <span>to {{message.email}}</span><span>{{message.date}}</span>
     {{else}}
-        <p>from {{message.email}}</p>
+        <p>from {{message.email}}</p><span>{{message.date}}</span>
     {{/if}}
     <p>Theme of message: {{message.title}}</p>
     <p>{{message.message}}</p>
-    {{footer}}
+    {{message.file}}
+    {{> footer}}
 </body>
 </html>

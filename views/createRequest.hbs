@@ -7,12 +7,12 @@
     <title>Creating request</title>
 </head>
 <body>
-    {{header}}
+    {{> headerTrue}}
     <h2>New request</h2>
     <p>Don't write in columns such words as "I am looking for..." or "I want..." etc.</p>
-    <form method="POST">
-        <label for="">Looking for:</label>
-        <input type="text" name="title">
+    <form action="/api/myPage/newRequest"  method="POST">
+        <label for="">Looking for(title of request):</label>
+        <input type="text" name="title" required>
         <label for="">Experince:</label>
         <p>If experince is not necessary just left this column empty</p>
         <input type="text" name="experience">
@@ -21,12 +21,11 @@
         <input type="text" name="salary">
         <label for="">Information about your request</label>
         <p>like what can you suggest and etc.</p>
-        <input type="text" name="other">
-        <label for="">Contacts</label>
-        <p>Your contacts(phone number, work email, etc)</p>
+        <textarea name="other" cols="30" rows="10" required></textarea>
+        <p>(your contacts will be automatically showed)</p>
         <input type="submit" value="Create request">
     </form>
-    <a href="/myPage/:id">Back to my page</a>
-    {{footer}}
+    <a href="/myPage">Back to my page</a>
+    {{> footer}}
 </body>
 </html>

@@ -7,17 +7,14 @@
     <title>Your profile</title>
 </head>
 <body>
-    {{headerTrue}}
-
+    {{> headerTrue}}
     <div>
-        <img src={{avatar}}>
-        <div><a href="/api/auth/uploadAvatar">Change your avatar</a></div>
         <form action="/api/myPage/profile_method=PUT" method="POST">
-            <input type="text" value="{{name}}" required>
-            <input type="text" value="{{surname}}" required>
+            <span>name: </span><input type="text" name="name" value="{{name}}" required>
+            <span>surname: </span><input type="text" name="surname" value="{{surname}}" required>
             <label for="">Your email: {{email}}</label>
-            <span>age: </span> <input type="number" value="{{age}}">
-            <span>country: </span> <input type="text" value="{{country}}">
+            <span>age: </span> <input type="number" name="age" value="{{age}}">
+            <span>country: </span> <input type="text" name="country" value="{{country}}">
             <label for="">experience</label>
             <p>Write main information about your experince in programming.</p>
             <textarea name="exerience" cols="30" rows="5">{{experience}}</textarea>
@@ -25,15 +22,13 @@
             <p>Write some links abbot you if you want in such format as: git - http:/git/somepage/yourAccount. </p>
             <p>Put an enter after every link.</p>
             <textarea name="links" cols="30" rows="5">{{links}}</textarea>
-            <span>phone: </span><input type="tel" value="{{phone}}">
+            <span>phone: </span><input type="tel" name="phone" value="{{phone}}">
             <label for="">other</label>
             <p>Write details that you also want to tell.</p>
             <textarea name="other" cols="30" rows="10">{{other}}</textarea>
             <input type="submit" value="Update">
         </form>
-        
     </div>
-
-    {{footer}}
+    {{> footer}}
 </body>
 </html>

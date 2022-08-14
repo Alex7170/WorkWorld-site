@@ -7,15 +7,21 @@
     <title>My page</title>
 </head>
 <body>
-    {{headerTrue}}
+    {{> headerTrue}}
     <div>
-        <img src="{{this.avatar}}" alt="">
-        <h3>{{this.name}} {{this.surname}}</h3>
-        <p>email: {{email}}</p>
-        {{#each links}}
-            <p>{{this}}</p>
-        {{/each}}
-        <span><a href="/api/myPage/updateProfil">see whole profil...</a></span>
+        <div>
+            <img src="{{imageSrc}}">
+            <div><a href="api/myPage/uploadAvatar">Put another photo</a></div>
+        </div>
+        <div>
+            <h3>{{user.name}} {{user.surname}}</h3>
+            <p>email: {{user.email}}</p>
+            {{#each user.links}}
+                <p>{{this}}</p>
+            {{/each}}
+            <span><a href="/api/myPage/updateProfil">see whole profil...</a></span>
+        </div>
+
     </div>
     <div>
         <h2>For employer</h2>
@@ -23,7 +29,7 @@
     </div>
     <div>
         <a href="/api/myPage/messages"><h2>Messages</h2></a>
-        {{#each messages}}
+        {{#each user.messages}}
             <a href="/api/auth/myMessages/{{this.id}}">
                 <div>
                     <h3>{{this.title}}</h3> <span>{{this.wroteAt}}</span>
@@ -34,6 +40,6 @@
         {{/each}}
         <h2><a href="/api/myPage/messages">All messages</a></h2>
     </div>
-    {{footer}}
+    {{> footer}}
 </body>
 </html>
